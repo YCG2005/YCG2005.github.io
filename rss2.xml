@@ -9,31 +9,8 @@
     <atom:link href="http://example.com/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>黑发不知勤学早，白首方悔读书迟 -- 颜真卿</description>
-    <pubDate>Mon, 23 Oct 2023 12:03:22 GMT</pubDate>
+    <pubDate>Sun, 22 Oct 2023 11:53:39 GMT</pubDate>
     <generator>http://hexo.io/</generator>
-    
-    <item>
-      <title></title>
-      <link>http://example.com/2023/10/23/HELLO/</link>
-      <guid>http://example.com/2023/10/23/HELLO/</guid>
-      <pubDate>Mon, 23 Oct 2023 12:27:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;p&gt;好耶好耶好耶&lt;/p&gt;
-</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<p>好耶好耶好耶</p>]]></content:encoded>
-      
-      
-      
-      
-      <comments>http://example.com/2023/10/23/HELLO/#disqus_thread</comments>
-      
-    </item>
     
     <item>
       <title>Hello World</title>
