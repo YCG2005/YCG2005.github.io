@@ -9,8 +9,31 @@
     <atom:link href="http://ycg0508.com/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>黑发不知勤学早，白首方悔读书迟 -- 颜真卿</description>
-    <pubDate>Tue, 24 Oct 2023 13:29:40 GMT</pubDate>
+    <pubDate>Tue, 24 Oct 2023 13:33:22 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>常见hexo命令</title>
+      <link>http://ycg0508.com/2023/10/24/hexo/</link>
+      <guid>http://ycg0508.com/2023/10/24/hexo/</guid>
+      <pubDate>Tue, 24 Oct 2023 13:33:08 GMT</pubDate>
+      
+        
+        
+      <description>&lt;blockquote&gt;
+&lt;p&gt;&amp;#x2F;&amp;#x2F;运行&lt;br&gt; hexo server&lt;br&gt; &amp;#x2F;&amp;#x2F;新建文章&lt;br&gt;hexo new “xxx”&lt;br&gt;&amp;#x2F;&amp;#x2F;新建页面&lt;br&gt; hexo new page “pageName”&lt;br&gt;&amp;#</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<blockquote><p>&#x2F;&#x2F;运行<br> hexo server<br> &#x2F;&#x2F;新建文章<br>hexo new “xxx”<br>&#x2F;&#x2F;新建页面<br> hexo new page “pageName”<br>&#x2F;&#x2F;远程部署<br>hexo deploy<br>&#x2F;&#x2F;生成静态文件public<br>hexo generate</p></blockquote>]]></content:encoded>
+      
+      
+      
+      
+      <comments>http://ycg0508.com/2023/10/24/hexo/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>Linux基础</title>
