@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://ycg0508.com/2023/10/27/%E9%AB%98%E7%BA%A7IO%E5%87%BD%E6%95%B0/</loc>
+    
+    <lastmod>2023-10-27</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://ycg0508.com/2023/10/27/README/</loc>
+    
+    <lastmod>2023-10-27</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://ycg0508.com/2023/10/27/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/</loc>
     
     <lastmod>2023-10-27</lastmod>
@@ -85,7 +103,7 @@
 
   <url>
     <loc>http://ycg0508.com/</loc>
-    <lastmod>2023-10-27</lastmod>
+    <lastmod>2023-10-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
