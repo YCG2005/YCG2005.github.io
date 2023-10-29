@@ -30,7 +30,7 @@
 <meta property="og:description" content="[TOC] 高级IO函数pipe管道123&#x2F;* 函数原型 *&#x2F;#include &lt;unistd.h&gt;int pipe(int fd[2]);   定义： ​		函数执行成功返回0，并将一个打开的文件描述符填入指向的数组。 ​		fd[0] 和 fd[1] 分别构成管道的两端，fd[1] 写入的数据只能从 fd[0] 读出，fd[0] 为读端，fd[1] 为写端，如果要实现双向的数据传输">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-10-27T15:25:21.540Z">
-<meta property="article:modified_time" content="2023-10-27T16:14:48.524Z">
+<meta property="article:modified_time" content="2023-10-29T12:39:10.126Z">
 <meta property="article:author" content="CG">
 <meta name="twitter:card" content="summary">
 
@@ -242,7 +242,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-10-28 00:14:48" itemprop="dateModified" datetime="2023-10-28T00:14:48+08:00">2023-10-28</time>
+                <time title="修改时间：2023-10-29 20:39:10" itemprop="dateModified" datetime="2023-10-29T20:39:10+08:00">2023-10-29</time>
               </span>
 
           
@@ -258,14 +258,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>942</span>
+              <span>2.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -291,6 +291,37 @@
 
 <h2 id="dup-dup2复制文件描述符"><a href="#dup-dup2复制文件描述符" class="headerlink" title="dup&#x2F;dup2复制文件描述符"></a>dup&#x2F;dup2复制文件描述符</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 函数原型 */</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">dup</span><span class="params">(<span class="type">int</span> file_descriptor)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">dup2</span><span class="params">(<span class="type">int</span> file_descriptor_one, <span class="type">int</span> file_descriptor_two)</span></span>;</span><br><span class="line"><span class="comment">/* 函数解释 */</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">dup函数创建一个新的文件描述符，指向被复制文件描述符的相同的文件、管道和网络连接，按序后取，取当前系统可用最小文件描述符，失败返回-1，设置error</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
 
+<h2 id="零拷贝函数"><a href="#零拷贝函数" class="headerlink" title="零拷贝函数"></a>零拷贝函数</h2><h3 id="sendfile文件传输"><a href="#sendfile文件传输" class="headerlink" title="sendfile文件传输"></a>sendfile文件传输</h3><blockquote>
+<p>sendfile直接在两个文件描述符之间传递数据，属于内核操作，不需要内核缓冲区和用户缓冲区的数据拷贝，效率很高</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 函数定义 */</span></span><br><span class="line"><span class="function"><span class="type">ssize_t</span> <span class="title">sendfile</span><span class="params">(<span class="type">int</span> out_fd, <span class="type">int</span> in_fd, <span class="type">off_t</span>* offset, <span class="type">size_t</span> count)</span></span>;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">参数解释：</span></span><br><span class="line"><span class="comment">in_fd -- 待读出的文件描述符。</span></span><br><span class="line"><span class="comment">out_fd -- 待写入的文件描述符</span></span><br><span class="line"><span class="comment">offset -- 指定从读入文件流的哪个位置开始读</span></span><br><span class="line"><span class="comment">count -- 指定在文件描述符in_fd 和 out_fd之间传输的字节数</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="mmap-munmmap共享内存"><a href="#mmap-munmmap共享内存" class="headerlink" title="mmap&#x2F;munmmap共享内存"></a>mmap&#x2F;munmmap共享内存</h3><blockquote>
+<p>函数概念：</p>
+<p>mmap函数用于申请一段内存空间，可以将这段内存作为进程间的通信的共享内存，也可以将文件映射到这段内存。执行成功返回指向目标内存区域的指针，失败返回MAP_FAILED((void*)-1)，并设置error。</p>
+<p>munmap函数用于释放mmap创建的内存空间，执行成功返回0，执行失败返回-1。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 函数定义 */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"><span class="comment">/* mmap */</span></span><br><span class="line"><span class="function"><span class="type">void</span> * <span class="title">mmap</span><span class="params">(<span class="type">void</span>* start, <span class="type">size_t</span> length, <span class="type">int</span> port, <span class="type">int</span> flags, <span class="type">int</span> fd, <span class="type">off_t</span> offset)</span></span>;</span><br><span class="line"><span class="comment">/* munmap */</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">munmap</span><span class="params">(<span class="type">void</span>* start, <span class="type">size_t</span> length)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">参数解释</span></span><br><span class="line"><span class="comment">start -- 允许使用特定的地址作为这段内存的起始地址，被设置为NULL，则由系统自动分配地址。</span></span><br><span class="line"><span class="comment">length -- 指定内存段的长度</span></span><br><span class="line"><span class="comment">prot -- 指定内存段的访问权限，具体可看参数列表1</span></span><br><span class="line"><span class="comment">flags -- 控制内存段内容被修改后程序的行为，具体可看参数列表2</span></span><br><span class="line"><span class="comment">fd -- 被映射文件对应的文件描述符</span></span><br><span class="line"><span class="comment">offset -- 设置从文件的何处开始映射</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="splice函数"><a href="#splice函数" class="headerlink" title="splice函数"></a>splice函数</h3><blockquote>
+<p>函数概念：</p>
+<p>splice函数用于在两个文件描述符之间移动数据，也是零拷贝操作。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 函数定义 */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">ssize_t</span> <span class="title">splice</span><span class="params">(<span class="type">int</span> fd_in,<span class="type">loff_t</span>*off_in,<span class="type">int</span></span></span></span><br><span class="line"><span class="params"><span class="function">fd_out,<span class="type">loff_t</span>*off_out,<span class="type">size_t</span> len,<span class="type">unsigned</span> <span class="type">int</span> flags)</span></span>;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">6-6节</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="tee函数"><a href="#tee函数" class="headerlink" title="tee函数"></a>tee函数</h3><blockquote>
+<p>函数概念</p>
+<p>tee函数在两个管道文件描述符之间复制数据，也是零拷贝操作。它不消耗数据，因此源文件描述符上的数据仍然可以用于后续的读操作。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 函数定义 */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">ssize_t</span> <span class="title">tee</span><span class="params">(<span class="type">int</span> fd_in, <span class="type">int</span> fd_out, <span class="type">size_t</span> len, <span class="type">unsigned</span> <span class="type">int</span> flags)</span></span>;</span><br><span class="line"><span class="comment">/* 参数解释 */</span></span><br><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment">该函数的参数的含义与splice相同（但fd_in和fd_out必须都是管道</span></span><br><span class="line"><span class="comment">文件描述符） </span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="fcntl函数"><a href="#fcntl函数" class="headerlink" title="fcntl函数"></a>fcntl函数</h3><blockquote>
+<p>函数概念：</p>
+<p>fcntl函数提供对文件描述符的各种控制操作，一般用于将文件描述符设置为非阻塞的。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 函数定义 */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">fcntl</span><span class="params">(<span class="type">int</span> fd,cmd,...)</span></span>;</span><br><span class="line"><span class="comment">/* 参数解释 */</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">fd -- 被操作的文件描述符</span></span><br><span class="line"><span class="comment">cmd -- 指定操作</span></span><br><span class="line"><span class="comment">... -- 可变参数，根据实际情况加参</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<p>![image-20231029192320278](C:\Users\Yan chang guo\AppData\Roaming\Typora\typora-user-images\image-20231029192320278.png)</p>
 
     </div>
 
@@ -382,8 +413,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2023/10/27/README/" rel="prev" title="高级IO函数">
-      <i class="fa fa-chevron-left"></i> 高级IO函数
+    <a href="/2023/10/27/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" rel="prev" title="网络编程基础">
+      <i class="fa fa-chevron-left"></i> 网络编程基础
     </a></div>
       <div class="post-nav-item"></div>
     </div>
@@ -449,7 +480,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7IO%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">高级IO函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#pipe%E7%AE%A1%E9%81%93"><span class="nav-number">1.1.</span> <span class="nav-text">pipe管道</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#socketpair%E5%8F%8C%E5%90%91%E7%AE%A1%E9%81%93"><span class="nav-number">1.2.</span> <span class="nav-text">socketpair双向管道</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dup-dup2%E5%A4%8D%E5%88%B6%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="nav-number">1.3.</span> <span class="nav-text">dup&#x2F;dup2复制文件描述符</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7IO%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">高级IO函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#pipe%E7%AE%A1%E9%81%93"><span class="nav-number">1.1.</span> <span class="nav-text">pipe管道</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#socketpair%E5%8F%8C%E5%90%91%E7%AE%A1%E9%81%93"><span class="nav-number">1.2.</span> <span class="nav-text">socketpair双向管道</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dup-dup2%E5%A4%8D%E5%88%B6%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="nav-number">1.3.</span> <span class="nav-text">dup&#x2F;dup2复制文件描述符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%B6%E6%8B%B7%E8%B4%9D%E5%87%BD%E6%95%B0"><span class="nav-number">1.4.</span> <span class="nav-text">零拷贝函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sendfile%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93"><span class="nav-number">1.4.1.</span> <span class="nav-text">sendfile文件传输</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mmap-munmmap%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98"><span class="nav-number">1.4.2.</span> <span class="nav-text">mmap&#x2F;munmmap共享内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#splice%E5%87%BD%E6%95%B0"><span class="nav-number">1.4.3.</span> <span class="nav-text">splice函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tee%E5%87%BD%E6%95%B0"><span class="nav-number">1.4.4.</span> <span class="nav-text">tee函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fcntl%E5%87%BD%E6%95%B0"><span class="nav-number">1.4.5.</span> <span class="nav-text">fcntl函数</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -465,7 +496,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
